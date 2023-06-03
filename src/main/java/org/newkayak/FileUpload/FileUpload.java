@@ -27,7 +27,14 @@ public class FileUpload {
 
         private List<String> excludeExtensionList = Arrays.asList("jsp", "asp", "java", "cpp", "py", "js", "html", "css", "sh", "exe");
         private List<String> resolutions = Arrays.asList("");
-        private Map<String,Integer> heightWidthTable = Map.of("480", 720, "720", 1280, "1080", 1920, "1440", 2560);
+        private Map<String,Integer> heightWidthTable = new HashMap<String, Integer>(){{
+            put("480", 720);
+            put("720", 1280);
+            put("1080", 1920);
+            put("1440", 2560);
+        }};
+
+                //Map.of("480", 720, "720", 1280, "1080", 1920, "1440", 2560);
 
         public FileUpload(String filePath, Boolean resize, Long maximumSize) {
             this.filePath = filePath;
