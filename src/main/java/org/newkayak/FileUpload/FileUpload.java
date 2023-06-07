@@ -45,11 +45,10 @@ public class FileUpload {
 
         public List<FileResult> upload(Boolean isImage, MultipartFile... multipartFile) throws FileException {
 
-            Long  excludeCount =  excludeExtensionList.stream().filter(item -> {
+           Long excludeCount = excludeExtensionList.stream().filter(item -> {
                     Long result = Arrays.stream(multipartFile).filter(item2 -> item2.getContentType().equals(item)).count();
                     return result > 0;
-                }).count();
-
+            }).count();
             if(excludeCount>0){
                 throw new FileException(FileExceptions.NOT_ALLOWED);
             }
@@ -96,9 +95,11 @@ public class FileUpload {
             }
             String os = System.getProperty("os.name").toLowerCase();
             if(!os.contains("window")){
+//                System.out.println(file.canWrite());
                 file.setReadable(true);
                 file.setWritable(true);
             }
+
         }
         private List<FileResult> makeFiles(MultipartFile ...files) throws FileException {
             String datePath = getDateFormatPath();
@@ -115,11 +116,15 @@ public class FileUpload {
                     File f = new File(this.filePath+"/"+storedFileName);
                     try( FileOutputStream fileOutputStream = new FileOutputStream(f);
                          BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream) ){
-                        bufferedOutputStream.write(file.getBytes());
+
+                         bufferedOutputStream.write(file.getBytes());
+                         bufferedOutputStream.flush();
                     } catch (IOException e){
                         throw new FileException(FileExceptions.FILE_SAVE_FAIL);
                     }
 
+
+                    System.out.println("SUCCESS :: "+f.exists());
                     result.add( new FileResult(originalFileName,storedFileName,contentType, fileSize));
             }
             return result;
@@ -144,7 +149,7 @@ public class FileUpload {
                             String path = this.filePath + "/" + sizePiece + "/" + datePath ;
                             File f = new File(path);
                             if(!f.exists()){
-                                f.mkdirs();
+                                this.mkdir(path);
                             }
                             f = new File(path+"/" + encryptedFileName + "." + extension);
 
@@ -153,6 +158,9 @@ public class FileUpload {
                             } catch (IOException e) {
                                 throw new RuntimeException(e);
                             }
+
+//                            System.out.println(path+"/" + encryptedFileName + "." + extension);
+//                            System.out.println("SUCCESS :: "+f.exists());
                         });
                     } catch (RuntimeException | IOException e) {
                         throw new FileException(FileExceptions.FILE_SAVE_FAIL);
