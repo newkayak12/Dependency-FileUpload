@@ -58,7 +58,7 @@ public class FileUpload {
 
             if(resize&&isImage){
                 this.resolutions = Arrays.asList("480", "720", "1080", "1440","origin");
-                this.resolutions.stream().forEach(item->mkdir(item));
+                this.resolutions.stream().forEach(item -> this.mkdir(filePath+"/"+item));
                 return  resizedMake( resolutions, multipartFile);
             }
             return makeFiles(multipartFile);
@@ -89,13 +89,12 @@ public class FileUpload {
             return LocalDate.now().format(DateTimeFormatter.ofPattern("YYYYMMdd"));
         }
         private void mkdir(String folderName){
-            File file = new File(filePath+"/"+folderName);
+            File file = new File(folderName);
             if(!file.exists()){
                 file.mkdirs();
             }
             String os = System.getProperty("os.name").toLowerCase();
             if(!os.contains("window")){
-//                System.out.println(file.canWrite());
                 file.setReadable(true);
                 file.setWritable(true);
             }
@@ -122,9 +121,6 @@ public class FileUpload {
                     } catch (IOException e){
                         throw new FileException(FileExceptions.FILE_SAVE_FAIL);
                     }
-
-
-                    System.out.println("SUCCESS :: "+f.exists());
                     result.add( new FileResult(originalFileName,storedFileName,contentType, fileSize));
             }
             return result;
@@ -143,26 +139,27 @@ public class FileUpload {
                     String contentType = file.getContentType();
                     Long fileSize = file.getSize();
                     try {
-                        BufferedImage bufferedImage = ImageIO.read(file.getInputStream());
-                        int type = bufferedImage.getType()==0? BufferedImage.TYPE_INT_ARGB:bufferedImage.getType();
+
                         size.parallelStream().forEach( sizePiece -> {
                             String path = this.filePath + "/" + sizePiece + "/" + datePath ;
                             File f = new File(path);
+
                             if(!f.exists()){
                                 this.mkdir(path);
                             }
+
                             f = new File(path+"/" + encryptedFileName + "." + extension);
 
                             try {
+                                BufferedImage bufferedImage = ImageIO.read(file.getInputStream());
+                                int type = bufferedImage.getType()==0? BufferedImage.TYPE_INT_ARGB : bufferedImage.getType();
                                 ImageIO.write(resize(bufferedImage, sizePiece, type),extension, f);
+
                             } catch (IOException e) {
                                 throw new RuntimeException(e);
                             }
-
-//                            System.out.println(path+"/" + encryptedFileName + "." + extension);
-//                            System.out.println("SUCCESS :: "+f.exists());
                         });
-                    } catch (RuntimeException | IOException e) {
+                    } catch (RuntimeException e) {
                         throw new FileException(FileExceptions.FILE_SAVE_FAIL);
                     }
                      result.add(new FileResult(originalFileName,storedFileName,contentType, fileSize));
