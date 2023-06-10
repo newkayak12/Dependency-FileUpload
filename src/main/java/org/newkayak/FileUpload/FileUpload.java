@@ -102,10 +102,10 @@ public class FileUpload {
         }
         private List<FileResult> makeFiles(MultipartFile ...files) throws FileException {
             String datePath = getDateFormatPath();
-            String encryptedFileName = getUUID();
             List<FileResult> result = new ArrayList<>();
             mkdir(this.filePath+"/origin/"+datePath);
             for(MultipartFile file : files){
+                    String encryptedFileName = getUUID();
                     String originalFileName = file.getOriginalFilename();
                     String extension = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".")+1);
                     String storedFileName = datePath+"/"+encryptedFileName+"."+extension;
@@ -128,11 +128,11 @@ public class FileUpload {
 
         private List<FileResult> resizedMake( List<String> size, MultipartFile...files) throws FileException {
             String datePath = getDateFormatPath();
-            String encryptedFileName = getUUID();
             List<FileResult> result = new ArrayList<>();
 
             for(MultipartFile file: files){
 
+                    String encryptedFileName = getUUID();
                     String originalFileName = file.getOriginalFilename();
                     String extension = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".")+1);
                     String storedFileName = datePath+"/"+encryptedFileName+"."+extension;

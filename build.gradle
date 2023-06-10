@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'com.github.newkayak12'
-version '1.0.5'
+version '1.0.7'
 
 repositories {
     mavenCentral()
@@ -28,7 +28,7 @@ publishing {
             // groupId, artifactId, version을 따로 지정하지 않으면 처음 생성할 때 지정한 기본설정으로 생성한다. (생략가능)
             groupId = 'com.github.newkayak12'
             artifactId = 'Dependency-FileUpload'
-            version = '1.0.5'
+            version = '1.0.7'
 
             from components.java
         }
