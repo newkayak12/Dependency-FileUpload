@@ -13,6 +13,8 @@ public class FileResult {
         this.fileSize = fileSize;
     }
 
+    public FileResult() {
+    }
 
     public String getOriginalFileName() {
         return originalFileName;
