@@ -71,7 +71,7 @@ public class FileUpload {
 
             return this.resolutions.stream().mapToLong(res ->
                 Arrays.stream(target).filter(file -> {
-                   String path = String.format("%s/%s/%s", this.filePath, res, file.getOriginalFileName());
+                   String path = String.format("%s/%s/%s", this.filePath, res, file.getStoredFileName());
                    Path filePath = Paths.get(path);
                     try {
                         return Files.deleteIfExists(filePath);

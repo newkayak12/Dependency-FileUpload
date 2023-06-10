@@ -31,4 +31,15 @@ public class FileResult {
     public Long getFileSize() {
         return fileSize;
     }
+
+
+    @Override
+    public String toString() {
+        return "FileResult = {\n" +
+                "\t originalFileName : \"" + originalFileName + '\"' +
+                "\n\t storedFileName : \"" + storedFileName + '\"' +
+                "\n\t contentType : \"" + contentType + '\"' +
+                "\n\t fileSize : \"" + fileSize + '\"' +
+                "\n}";
+    }
 }
