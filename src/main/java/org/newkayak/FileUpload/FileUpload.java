@@ -112,13 +112,14 @@ public class FileUpload {
                     String contentType = file.getContentType();
                     Long fileSize = file.getSize();
 
-                    File f = new File(this.filePath+"/"+storedFileName);
+                    File f = new File(this.filePath+"/origin/"+storedFileName);
                     try( FileOutputStream fileOutputStream = new FileOutputStream(f);
                          BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream) ){
 
                          bufferedOutputStream.write(file.getBytes());
                          bufferedOutputStream.flush();
                     } catch (IOException e){
+                        e.printStackTrace();
                         throw new FileException(FileExceptions.FILE_SAVE_FAIL);
                     }
                     result.add( new FileResult(originalFileName,storedFileName,contentType, fileSize));

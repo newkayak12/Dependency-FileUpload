@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.Arrays;
 
 public class FileTest {
     @Test
@@ -27,5 +28,16 @@ public class FileTest {
         FileUpload upload = new FileUpload(output, true, 1024L * 1024L * 100);
         FileResult result = new FileResult(null, target, null, null);
         System.out.println(upload.remove(result));
+    }
+
+    @Test
+    public void mp4() throws IOException {
+        String input = "/Users/sanghyeonkim/Downloads/port/netflixClone/source/zerocho_js/02.mp4";
+        String output = "/Users/sanghyeonkim/Downloads/port/netflixClone/list";
+
+        FileInputStream inputStream = new FileInputStream(input);
+        FileUpload upload = new FileUpload(output, false, 1024L * 1024L * 1024L * 500);
+        MockMultipartFile file = new MockMultipartFile("TEST", "TEST.mp4", "video", inputStream);
+        upload.upload(false, file);
     }
 }
